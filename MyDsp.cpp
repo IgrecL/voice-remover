@@ -9858,7 +9858,7 @@ class mydsp : public dsp {
 	}
 
 	virtual int getNumInputs() {
-		return 2;
+		return 4;
 	}
 	virtual int getNumOutputs() {
 		return 2;
@@ -9913,14 +9913,16 @@ class mydsp : public dsp {
 	virtual void compute(int count, FAUSTFLOAT** RESTRICT inputs, FAUSTFLOAT** RESTRICT outputs) {
 		FAUSTFLOAT* input0 = inputs[0];
 		FAUSTFLOAT* input1 = inputs[1];
+		FAUSTFLOAT* input2 = inputs[2];
+		FAUSTFLOAT* input3 = inputs[3];
 		FAUSTFLOAT* output0 = outputs[0];
 		FAUSTFLOAT* output1 = outputs[1];
 		int iSlow0 = int(float(fButton0));
 		float fSlow1 = 0.0009775171f * float(fHslider0);
 		int iSlow2 = int(float(fHslider1));
 		for (int i0 = 0; i0 < count; i0 = i0 + 1) {
-			float fTemp0 = float(input1[i0]);
-			float fTemp1 = float(input0[i0]);
+			float fTemp0 = float(input1[i0]) + float(input3[i0]);
+			float fTemp1 = float(input0[i0]) + float(input2[i0]);
 			float fTemp2 = fSlow1 * (fTemp1 - fTemp0);
 			fVec0[IOTA0 & 1023] = fTemp2;
 			float fElse0 = fSlow1 * fTemp1;
@@ -9939,7 +9941,7 @@ class mydsp : public dsp {
 	#define FAUST_FILE_NAME "MyDsp.dsp"
 	#define FAUST_CLASS_NAME "mydsp"
 	#define FAUST_COMPILATION_OPIONS "-a /usr/local/share/faust/teensy/teensy.cpp -lang cpp -i -es 1 -mcd 16 -uim -single -ftz 0"
-	#define FAUST_INPUTS 2
+	#define FAUST_INPUTS 4
 	#define FAUST_OUTPUTS 2
 	#define FAUST_ACTIVES 3
 	#define FAUST_PASSIVES 0
